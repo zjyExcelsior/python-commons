@@ -12,6 +12,14 @@ BACKUP_COUNT = 5
 LOG_FORMAT = logging.Formatter(
     '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s', '%Y-%m-%d %H:%M:%S')
 
+def singleton(cls):
+    instances = {}
+    def get_instance(*args, **kw):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kw)
+        return instances[cls]
+    return get_instance
+
 def _get_filehandler(name):
     base_path = os.path.dirname(os.path.realpath(__file__))
     logs_dir = os.path.join(base_path, 'logs')
@@ -25,6 +33,7 @@ def _get_filehandler(name):
     return file_handler
 
 
+@singleton
 def get_logger(name, level=logging.INFO):
     '''
     return logger
