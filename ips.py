@@ -19,6 +19,9 @@ def get_ip_ranges(begin_ip, end_ip=''):
 
 
 def get_sorted_ip_list(ip_list):
+    '''
+    对ip列表进行排序
+    '''
     return sorted(ip_list, key=socket.inet_aton)
 
 if __name__ == '__main__':
