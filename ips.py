@@ -2,6 +2,7 @@
 '''
 some method about ip
 '''
+import socket
 
 
 def get_ip_ranges(begin_ip, end_ip=''):
@@ -16,6 +17,12 @@ def get_ip_ranges(begin_ip, end_ip=''):
                       end else begin for begin, end in zip(begin_ip_list, end_ip_list)]
     return '.'.join(result_ip_list)
 
+
+def get_sorted_ip_list(ip_list):
+    return sorted(ip_list, key=socket.inet_aton)
+
 if __name__ == '__main__':
-    print get_ip_ranges('192.168.1.22') # 192.168.1.22
-    print get_ip_ranges('192.168.1.22', '192.168.3.33') # 192.168.1-3.22-33
+    print get_ip_ranges('192.168.1.22')  # 192.168.1.22
+    print get_ip_ranges('192.168.1.22', '192.168.3.33')  # 192.168.1-3.22-33
+    ip_list = ['192.168.1.33', '10.5.1.3', '10.5.2.4', '202.98.96.68', '133.120.1.1']
+    print get_sorted_ip_list(ip_list)
