@@ -48,6 +48,10 @@ def get_minion_down(salt_client, master_opts, removekeys=False):
             wheel.cmd('key.delete', [minion])
     return ret
 
+def delete_key(minion_id):
+    wheel = salt.wheel.WheelClient(master_opts)
+    wheel.cmd('key.delete', [minion_id])
+
 
 if __name__ == '__main__':
     salt_client = salt.client.LocalClient()
