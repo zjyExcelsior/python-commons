@@ -42,13 +42,12 @@ def get_minion_down(salt_client, master_opts, removekeys=False):
     ret = get_minion_status(salt_client, master_opts).get('down', [])
     for minion in ret:
         if removekeys:
-            # wheel = salt.wheel.Wheel(master_opts)
-            # wheel.call_func('key.delete', match=minion)
-            wheel = salt.wheel.WheelClient(master_opts)
-            wheel.cmd('key.delete', [minion])
+            delete_key(minion)
     return ret
 
 def delete_key(minion_id):
+    # wheel = salt.wheel.Wheel(master_opts)
+    # wheel.call_func('key.delete', match=minion)
     wheel = salt.wheel.WheelClient(master_opts)
     wheel.cmd('key.delete', [minion_id])
 
@@ -60,4 +59,4 @@ if __name__ == '__main__':
     # print get_minion_up(salt_client, master_opts)
     # print get_minion_down(salt_client, master_opts)
     print get_minion_down(salt_client, master_opts, removekeys=True)
-    print get_minion_status(salt_client, master_opts)
+    # print get_minion_status(salt_client, master_opts)
