@@ -19,7 +19,7 @@ def get_minion_status(salt_client, master_opts):
     '''
     ret = {}
     try:
-        minions = salt_client.cmd('*', 'test.ping', timeout=5)
+        minions = salt_client.cmd('*', 'test.ping', timeout=master_opts.get('timeout'))
     except SaltClientError as client_error:
         salt_logger.exception(
             'salt-master is down, Traceback info:\n %s', client_error)
