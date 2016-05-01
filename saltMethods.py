@@ -24,12 +24,11 @@ def get_minion_status(salt_client, master_opts):
         salt_logger.exception(
             'salt-master is down, Traceback info:\n %s', client_error)
         return ret
-    key = salt.key.Key(master_opts)
-    keys = key.list_keys()
+    keys = get_all_keys(master_opts)
     # keys == {'minions_rejected': [], 'minions_denied': [], 'minions_pre': [], 'minions': []}
     # ret['all_minions'] = sorted(keys.get(minions))
     ret['up'] = sorted(minions)
-    ret['down'] = sorted(set(keys.get('minions')) - set(minions))
+    ret['down'] = sorted(set(keys) - set(minions))
     return ret
 
 
@@ -65,4 +64,5 @@ if __name__ == '__main__':
     # print get_minion_down(salt_client, master_opts)
     # print get_minion_down(salt_client, master_opts, removekeys=True)
     # print get_minion_status(salt_client, master_opts)
-    print get_all_keys(master_opts)
+    # print get_all_keys(master_opts)
+    print get_minion_status(salt_client, master_opts)
