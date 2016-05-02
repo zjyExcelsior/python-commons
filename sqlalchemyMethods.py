@@ -33,19 +33,24 @@ def add_user(session):
     session.add(user_tcc)
     session.commit()
 
-
-def select_user(session, name):
-    result = session.query(User).filter(User.name == name).all()
-    return result
-
 def delete_user(session, name):
     result = session.query(User).filter(User.name == name).one()
     session.delete(result)
     session.commit()
+
+def update_user(session, name, new_password):
+    result = session.query(User).filter(User.name == name).one()
+    result.password = new_password
+    session.commit()
+
+def select_user(session, name):
+    result = session.query(User).filter(User.name == name).all()
+    return result
 
 if __name__ == '__main__':
     create_tables()
     session = Session()
     # add_user(session)
     # print select_user(session, 'zhujiongyao')
-    delete_user(session, 'zhujiongyao')
+    # delete_user(session, 'zhujiongyao')
+    update_user(session, 'tongchenchen', 'Tcc@2016')
