@@ -38,8 +38,14 @@ def select_user(session, name):
     result = session.query(User).filter(User.name == name).all()
     return result
 
+def delete_user(session, name):
+    result = session.query(User).filter(User.name == name).one()
+    session.delete(result)
+    session.commit()
+
 if __name__ == '__main__':
     create_tables()
     session = Session()
     # add_user(session)
-    print select_user(session, 'zhujiongyao')
+    # print select_user(session, 'zhujiongyao')
+    delete_user(session, 'zhujiongyao')
