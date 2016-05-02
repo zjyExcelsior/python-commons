@@ -7,8 +7,9 @@ from sqlalchemy.orm import sessionmaker
 engine = create_engine('mysql://root:123456@localhost/testdb', echo=False)
 Base = declarative_base()
 #Session = sessionmaker()
-#Session.configure(bind=engine)
+# Session.configure(bind=engine)
 Session = sessionmaker(bind=engine)
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -20,8 +21,10 @@ class User(Base):
     def __repr__(self):
         return '<User(name="%s", password="%s")>' % (self.name, self.password)
 
+
 def create_tables():
     Base.metadata.create_all(engine)
+
 
 def add_user(session):
     user_zjy = User(name='zhujiongyao', password='Zjy@2016')
@@ -30,8 +33,9 @@ def add_user(session):
     session.add(user_tcc)
     session.commit()
 
+
 def select_user(session, name):
-    result = session.query(User).filter(User.name==name).all()
+    result = session.query(User).filter(User.name == name).all()
     return result
 
 if __name__ == '__main__':
