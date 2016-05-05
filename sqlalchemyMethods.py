@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship, backref
+from sqlalchemy.sql import text
 from contextlib import contextmanager
 from logger import get_logger
 
@@ -58,7 +59,7 @@ def create_tables():
     Base.metadata.create_all(engine)
 
 
-def add_user(session):
+def add_user():
     with session_scope() as session:
         user_zjy = User(name='zhujiongyao', password='Zjy@2016')
         user_tcc = User(name='tongchenchen', password='Tcc@2016')
@@ -74,21 +75,21 @@ def add_user(session):
         session.add_all([card_zjy, card_tcc])
 
 
-def delete_user(session, name):
+def delete_user(name):
     with session_scope() as session:
         results = session.query(User).filter(User.name == name).all()
         for result in results:
             session.delete(result)
 
 
-def update_user(session, name, new_password):
+def update_user(name, new_password):
     with session_scope() as session:
         results = session.query(User).filter(User.name == name).all()
         for result in results:
             result.password = new_password
 
 
-def select_user_cards(session, user_name):
+def select_user_cards(user_name):
     with session_scope() as session:
         users = session.query(User).filter(User.name == user_name).all()
         # session.expunge_all()
@@ -102,13 +103,23 @@ def select_user_cards(session, user_name):
         ret.append('user: %s, id: %s, cards: %s' % (user, user.id, cards))
     return ret
 
+def select_all_from_user(user_name):
+    with session_scope() as session:
+        sql_expression = text('select * from users where users.name = :name')
+        args = {
+            'name': 'zhujy'
+        }
+        conn = engine.connect()
+        results = conn.execute(sql_expression, args).fetchall()
+        return results
+
 if __name__ == '__main__':
     create_tables()
-    session = Session()
     # add_user(session)
-    # delete_user(session, 'zhujiongyao')
-    # delete_user(session, 'tongchenchen')
-    # update_user(session, 'tongchenchen', 'tcc@2016')
-    # print select_user(session, 'tongchenchen')
-    print select_user_cards(session, 'zhujydd')
-    print select_user_cards(session, 'zhujy')
+    # delete_user('zhujiongyao')
+    # delete_user('tongchenchen')
+    # update_user('tongchenchen', 'tcc@2016')
+    # print select_user('tongchenchen')
+    # print select_user_cards('zhujyddd')
+    print select_user_cards('zhujy')
+    print select_all_from_user('zhujy')
