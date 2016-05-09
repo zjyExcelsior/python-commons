@@ -21,7 +21,7 @@ def singleton(cls):
     return get_instance
 
 def _get_filehandler(name):
-    base_path = os.path.dirname(os.path.realpath(__file__))
+    base_path = os.getcwd()
     logs_dir = os.path.join(base_path, 'logs')
     if not os.path.exists(logs_dir):
         os.makedirs(logs_dir)
