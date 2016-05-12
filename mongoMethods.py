@@ -7,8 +7,8 @@ import datetime
 
 client = MongoClient('localhost', 27017)
 # client = MongoClient('mongodb://localhost:27017/')
-db = client.test_database # get the database
-#collection = db.test_collection # get the collection
+db = client.test_database  # get the database
+# collection = db.test_collection # get the collection
 posts = db.posts
 post = {'author': 'zjy',
         'text': 'my first post',
@@ -16,7 +16,8 @@ post = {'author': 'zjy',
         'date': datetime.datetime.utcnow()}
 post_id = posts.insert_one(post).inserted_id
 print post_id
-print db.collection_names(include_system_collections=False) # print all collections in db
+# get all collection names in db
+print db.collection_names(include_system_collections=False)
 print posts.find_one()
 print posts.find_one({'author': 'zjy'})
 print posts.find_one({'author': 'zhujy'})
