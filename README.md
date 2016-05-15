@@ -13,4 +13,5 @@
 **sentryMethods.py** -> 将代码中的异常发送给`Sentry`服务器  
 **switch.py** -> 一个替代`switch`语句的方法  
 **mongoMethods.py** -> 一些`pymongo`相关的方法  
+**functoolsMethods.py** -> 一些`functools`相关的方法
 未完待续...
