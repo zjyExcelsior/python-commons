@@ -42,6 +42,29 @@ class User(Base):
         return '<User(name="%s", password="%s")>' % (self.name, self.password)
 
 
+class Class(Base):
+    __tablename__ = 'classes'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20))
+
+    def __repr__(self):
+        return '<Class(name="%s")>' % self.name
+
+
+class Score(Base):
+    __tablename__ = 'scores'
+
+    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    class_id = Column(Integer, ForeignKey('classes.id'), primary_key=True)
+    score = Column(Integer)
+    user = relationship('User', backref='classes')
+    _class = relationship('Class', backref='users')
+
+    def __repr__(self):
+        return '<Score(user_id="%s", class_id="%s", score="%s")>' % (self.user_id, self.class_id, self.score)
+
+
 class Card(Base):
     __tablename__ = 'cards'
 
@@ -54,6 +77,9 @@ class Card(Base):
     def __repr__(self):
         return '<Card(name="%s")>' % self.name
 
+
+def drop_tables():
+    Base.metadata.drop_all(engine)
 
 def create_tables():
     Base.metadata.create_all(engine)
@@ -103,6 +129,7 @@ def select_user_cards(user_name):
         ret.append('user: %s, id: %s, cards: %s' % (user, user.id, cards))
     return ret
 
+
 def select_all_from_user(user_name):
     with session_scope() as session:
         sql_expression = text('select * from users where users.name = :name')
@@ -113,13 +140,29 @@ def select_all_from_user(user_name):
         results = conn.execute(sql_expression, args).fetchall()
         return results
 
+def test_many_to_many():
+    with session_scope() as session:
+        user_a = User(name='zhujiongyao', password='123456')
+        user_b = User(name='tongcc', password='123456')
+        class_a = Class(name='AAA')
+        class_b = Class(name='BBB')
+        score_a = Score(score=99)
+        score_b = Score(score=88)
+        user_a.classes.append(score_a)
+        class_a.users.append(score_a)
+        user_b.classes.append(score_b)
+        class_b.users.append(score_b)
+        session.add_all([user_a, user_b, class_a, class_b, score_a, score_b])
+
 if __name__ == '__main__':
+    drop_tables()
     create_tables()
+    test_many_to_many()
     # add_user(session)
     # delete_user('zhujiongyao')
     # delete_user('tongchenchen')
     # update_user('tongchenchen', 'tcc@2016')
     # print select_user('tongchenchen')
     # print select_user_cards('zhujyddd')
-    print select_user_cards('zhujy')
-    print select_all_from_user('zhujy')
+    # print select_user_cards('zhujy')
+    # print select_all_from_user('zhujy')
