@@ -19,7 +19,8 @@ def get_minion_status(salt_client, master_opts):
     '''
     ret = {}
     try:
-        minions = salt_client.cmd('*', 'test.ping', timeout=master_opts.get('timeout'))
+        minions = salt_client.cmd(
+            '*', 'test.ping', timeout=master_opts.get('timeout'))
     except SaltClientError as client_error:
         salt_logger.exception(
             'salt-master is down, Traceback info:\n %s', client_error)
@@ -41,19 +42,25 @@ def get_minion_down(salt_client, master_opts, removekeys=False):
     ret = get_minion_status(salt_client, master_opts).get('down', [])
     for minion in ret:
         if removekeys:
-            delete_key(minion)
+            _delete_key(minion)
     return ret
 
-def delete_key(minion_id):
+
+def _delete_key(minion_id):
     # wheel = salt.wheel.Wheel(master_opts)
     # wheel.call_func('key.delete', match=minion)
     wheel = salt.wheel.WheelClient(master_opts)
     wheel.cmd('key.delete', [minion_id])
 
+
 def get_all_keys(master_opts):
     key = salt.key.Key(master_opts)
     keys = key.list_keys()
     return keys.get('minions', [])
+
+
+def sync_modules(salt_client):
+    salt_client.cmd(minion_ids, 'saltutil.sync_modules', expr_form='list')
 
 
 if __name__ == '__main__':
