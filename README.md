@@ -14,5 +14,6 @@
 **switch.py** -> 一个替代`switch`语句的方法  
 **mongoMethods.py** -> 一些`pymongo`相关的方法  
 **functoolsMethods.py** -> 一些`functools`相关的方法
-**secretkey.py** -> 一些得到随机密钥的方法
+**secretkey.py** -> 一些得到随机密钥的方法  
+**reMethods.py** -> 正则表达式相关方法
 未完待续...
