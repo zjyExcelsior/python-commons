@@ -7,6 +7,7 @@ import salt.config
 import salt.key
 import salt.client
 import salt.wheel
+import salt.runner
 from salt.exceptions import SaltClientError
 from logger import get_logger
 
@@ -45,6 +46,13 @@ def get_minion_down(salt_client, master_opts, removekeys=False):
             _delete_key(minion)
     return ret
 
+def get_minion_alived(salt_runner):
+    '''返回alived状态的minions'''
+    minions_alived = salt_runner.cmd('manage.alived')
+    if not minions_alived:
+        salt_logger.exception('there is no alived minions')
+    return minions_alived
+
 
 def _delete_key(minion_id):
     # wheel = salt.wheel.Wheel(master_opts)
@@ -66,6 +74,8 @@ def sync_modules(salt_client):
 if __name__ == '__main__':
     salt_client = salt.client.LocalClient()
     master_opts = salt.config.client_config('/etc/salt/master')
+    # salt_runner = salt.runner.Runner(master_opts)
+    # print get_minion_alived(salt_runner)
     # print get_minion_status(salt_client, master_opts)
     # print get_minion_up(salt_client, master_opts)
     # print get_minion_down(salt_client, master_opts)
