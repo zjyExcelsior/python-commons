@@ -15,9 +15,7 @@ salt_logger = get_logger('salt')
 
 
 def get_minion_status(salt_client, master_opts):
-    """
-    Print the status of all known salt minions
-    """
+    """Return the status of all known salt minions"""
     ret = {}
     try:
         minions = salt_client.cmd(
