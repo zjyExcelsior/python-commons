@@ -1,12 +1,12 @@
 # coding: utf-8
-'''
+"""
 Some method about secret key
-'''
+"""
 import os
 from base64 import b64encode
 
 def get_key_urandom(length):
-    '''get secreat key by os.urandom()'''
+    """get secreat key by os.urandom()"""
     random_bytes = os.urandom(length)
     # random_bytes = open('/dev/urandom', 'rb').read(32)
     token = b64encode(random_bytes)

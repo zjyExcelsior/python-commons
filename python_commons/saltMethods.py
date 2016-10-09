@@ -1,7 +1,7 @@
 # coding: utf-8
-'''
+"""
 some methods about salt
-'''
+"""
 # need super privileges
 import salt.config
 import salt.key
@@ -15,9 +15,9 @@ salt_logger = get_logger('salt')
 
 
 def get_minion_status(salt_client, master_opts):
-    '''
+    """
     Print the status of all known salt minions
-    '''
+    """
     ret = {}
     try:
         minions = salt_client.cmd(
@@ -47,7 +47,7 @@ def get_minion_down(salt_client, master_opts, removekeys=False):
     return ret
 
 def get_minion_alived(salt_runner):
-    '''返回alived状态的minions'''
+    """返回alived状态的minions"""
     minions_alived = salt_runner.cmd('manage.alived')
     if not minions_alived:
         salt_logger.exception('there is no alived minions')
