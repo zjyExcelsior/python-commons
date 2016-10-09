@@ -1,7 +1,7 @@
 # coding: utf-8
-'''
+"""
 Some methods about pymongo
-'''
+"""
 from pymongo import MongoClient
 import datetime
 

@@ -1,7 +1,7 @@
 # coding: utf-8
-'''
+"""
 得到根据网格划分的随机点的坐标
-'''
+"""
 from random import uniform as uniform_random
 
 # 画布总宽度

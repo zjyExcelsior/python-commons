@@ -1,6 +1,6 @@
 # coding: utf-8
 def switch(item):
-    '''a replacement method for switch statement in Python'''
+    """a replacement method for switch statement in Python"""
     return {
         'one': 1,
         'two': 2,

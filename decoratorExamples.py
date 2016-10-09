@@ -1,7 +1,7 @@
 # coding: utf-8
-'''
+"""
 some decorator examples
-'''
+"""
 import functools
 
 def first_decorator(func):

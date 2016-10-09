@@ -1,7 +1,7 @@
 # coding: utf-8
-'''
+"""
 Some methods about functools
-'''
+"""
 from functools import partial
 
 def func1(a, b):

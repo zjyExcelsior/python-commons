@@ -1,15 +1,13 @@
 # coding: utf-8
-'''
+"""
 some method about MySQL-python(MySQLdb)
-'''
+"""
 import MySQLdb
 from DBUtils.PooledDB import PooledDB
 
 
 def select_from_db(conn, sql, values):
-    '''
-    select from database
-    '''
+    """select from database"""
     c = conn.cursor()
     c.execute(sql, values)
     result = c.fetchall()
@@ -19,9 +17,7 @@ def select_from_db(conn, sql, values):
 
 
 def insert_into_db(conn, sql, values):
-    '''
-    insert into database
-    '''
+    """insert into database"""
     c = conn.cursor()
     c.execute(sql, values)
     conn.commit()

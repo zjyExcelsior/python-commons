@@ -1,16 +1,14 @@
 # coding: utf-8
-'''
+"""
 argparse examples
-'''
+"""
 import argparse
 
 
 def _get_args():
-    '''
-    get args from command line:
-    $ python args.py --name zhujiongyao
-    -> _get_args().name == 'zhujiongyao'
-    '''
+    """Get args from command line
+    $ python args.py --name zhujiongyao -> _get_args().name == 'zhujiongyao'
+    """
     parser = argparse.ArgumentParser(description='arguments for args.py')
     parser.add_argument(
         '--name', type=str, required=True, default='', help='name')

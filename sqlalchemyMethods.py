@@ -11,14 +11,14 @@ sql_logger = get_logger('sql')
 
 engine = create_engine('mysql://root:123456@localhost/testdb', echo=False)
 Base = declarative_base()
-#Session = sessionmaker()
+# Session = sessionmaker()
 # Session.configure(bind=engine)
 Session = sessionmaker(bind=engine)
 
 
 @contextmanager
 def session_scope():
-    '''Provide a transactional scope around a series of operations.'''
+    """Provide a transactional scope around a series of operations."""
     session = Session()
     try:
         # session.expire_on_commit = False

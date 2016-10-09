@@ -1,7 +1,7 @@
 # coding: utf-8
-'''
+"""
 Logger Module
-'''
+"""
 
 import logging
 import logging.handlers
@@ -35,9 +35,7 @@ def _get_filehandler(name):
 
 @singleton
 def get_logger(name, level=logging.INFO):
-    '''
-    return logger
-    '''
+    """Return logger"""
     logger = logging.getLogger(name)
     logger.setLevel(level)
     file_handler = _get_filehandler(name)
