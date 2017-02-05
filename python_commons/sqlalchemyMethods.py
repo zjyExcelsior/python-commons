@@ -9,26 +9,27 @@ from logger import get_logger
 
 sql_logger = get_logger('sql')
 
-engine = create_engine('mysql://root:123456@localhost/testdb', echo=False)
 Base = declarative_base()
+engine = create_engine('mysql://root:123456@localhost/testdb?charset=utf8', echo=False)
+Session = sessionmaker(bind=engine)
 # Session = sessionmaker()
 # Session.configure(bind=engine)
-Session = sessionmaker(bind=engine)
 
 
 @contextmanager
 def session_scope():
     """Provide a transactional scope around a series of operations."""
-    session = Session()
     try:
-        # session.expire_on_commit = False
+        session = Session()
+        Session.remove() # 这边已经可以remove
         yield session
         session.commit()
     except:
         session.rollback()
         raise
     finally:
-        session.close()
+        session.close() # 也可以用Session.remove()，不过目的都是为了调用close()
+        # Session.remove()
 
 
 class User(Base):
