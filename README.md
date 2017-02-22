@@ -13,7 +13,7 @@
 **sentry_methods.py** -> 将代码中的异常发送给`Sentry`服务器  
 **switch.py** -> 一个替代`switch`语句的方法  
 **mongo_methods.py** -> 一些`pymongo`相关的方法  
-**functools_methods.py** -> 一些`functools`相关的方法
+**functools_methods.py** -> 一些`functools`相关的方法  
 **secretkey.py** -> 一些得到随机密钥的方法  
 **re_methods.py** -> 正则表达式相关方法  
 **point_random.py** -> 得到随机坐标点相关方法  
