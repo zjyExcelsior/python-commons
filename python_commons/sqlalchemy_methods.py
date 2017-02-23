@@ -2,18 +2,22 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import sessionmaker, relationship, backref
+from sqlalchemy.orm import (sessionmaker, scoped_session,
+                            relationship, backref)
 from sqlalchemy.sql import text
 from contextlib import contextmanager
 from logger import get_logger
 
 sql_logger = get_logger('sql')
 
-Base = declarative_base()
-engine = create_engine('mysql://root:123456@localhost/testdb?charset=utf8', echo=False)
-Session = sessionmaker(bind=engine)
+engine = create_engine('mysql://root:123456@localhost/testdb?charset=utf8',
+                       echo=False)
+Session = scoped_session(sessionmaker(autoflush=False,
+                                      bind=engine))
 # Session = sessionmaker()
 # Session.configure(bind=engine)
+Base = declarative_base()
+Base.query = Session.query_property()
 
 
 @contextmanager
@@ -21,14 +25,13 @@ def session_scope():
     """Provide a transactional scope around a series of operations."""
     try:
         session = Session()
-        Session.remove() # 这边已经可以remove
+        Session.remove()  # 这边已经可以remove
         yield session
-        session.commit()
     except:
         session.rollback()
         raise
     finally:
-        session.close() # 也可以用Session.remove()，不过目的都是为了调用close()
+        session.close()  # 也可以用Session.remove()，不过目的都是为了调用close()
         # Session.remove()
 
 
@@ -82,6 +85,7 @@ class Card(Base):
 def drop_tables():
     Base.metadata.drop_all(engine)
 
+
 def create_tables():
     Base.metadata.create_all(engine)
 
@@ -100,6 +104,7 @@ def add_user():
         card_zjy = Card(name='icbc', owner_id=user_zjy.id)
         card_tcc = Card(name='abc', owner_id=user_tcc.id)
         session.add_all([card_zjy, card_tcc])
+        session.commit()
 
 
 def delete_user(name):
@@ -107,6 +112,7 @@ def delete_user(name):
         results = session.query(User).filter(User.name == name).all()
         for result in results:
             session.delete(result)
+        session.commit()
 
 
 def update_user(name, new_password):
@@ -114,6 +120,7 @@ def update_user(name, new_password):
         results = session.query(User).filter(User.name == name).all()
         for result in results:
             result.password = new_password
+        session.commit()
 
 
 def select_user_cards(user_name):
@@ -141,6 +148,7 @@ def select_all_from_user(user_name):
         results = conn.execute(sql_expression, args).fetchall()
         return results
 
+
 def test_many_to_many():
     with session_scope() as session:
         user_a = User(name='zhujiongyao', password='123456')
@@ -154,16 +162,23 @@ def test_many_to_many():
         user_b.classes.append(score_b)
         class_b.users.append(score_b)
         session.add_all([user_a, user_b, class_a, class_b, score_a, score_b])
+        session.commit()
+
+
+def test_class_query():
+    return User.query.with_entities(User.id, User.name).all()
+
 
 if __name__ == '__main__':
-    drop_tables()
-    create_tables()
-    test_many_to_many()
-    # add_user(session)
+    # drop_tables()
+    # create_tables()
+    # test_many_to_many()
+    # add_user()
     # delete_user('zhujiongyao')
     # delete_user('tongchenchen')
     # update_user('tongchenchen', 'tcc@2016')
     # print select_user('tongchenchen')
-    # print select_user_cards('zhujyddd')
+    # print select_user_cards('tongchenchen')
     # print select_user_cards('zhujy')
     # print select_all_from_user('zhujy')
+    print test_class_query()
