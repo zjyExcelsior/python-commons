@@ -13,7 +13,7 @@ def fibo(n):
     f(n) = f(n-1) + f(n-2) (n>=2)
     """
     a, b = 0, 1
-    for i in xrange(n):
+    for _ in xrange(n):
         a, b = b, a + b
     return a
 
