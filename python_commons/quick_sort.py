@@ -1,5 +1,5 @@
 # coding=utf-8
-"""quick sort"""
+"""quick sort(快速排序)"""
 
 
 def swap(arr, i, j):
@@ -17,7 +17,7 @@ def partition(arr, begin, end):
     return pivot
 
 
-def quicksort(arr, begin=0, end=None):
+def quick_sort(arr, begin=0, end=None):
     if end is None:
         end = len(arr) - 1
 
@@ -31,6 +31,7 @@ def quicksort(arr, begin=0, end=None):
     return _quicksort(arr, begin, end)
 
 
-array = [97, 200, 100, 101, 211, 107]
-quicksort(array)
-print array
+if __name__ == '__main__':
+    array = [97, 200, 100, 101, 211, 107]
+    quick_sort(array)
+    print array
