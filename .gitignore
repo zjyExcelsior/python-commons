@@ -1,2 +1,6 @@
 logs
 *.pyc
+
+# editors
+.idea
+.vscode
